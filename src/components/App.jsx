@@ -16,6 +16,23 @@ export class App extends Component {
     filter: ''
   }
 
+  componentDidMount() { //  1 раз при монтуванні
+    // console.log("App DidMount");
+    const saveContact = localStorage.getItem('contacts'); //читає з LocalStorage
+    const parseContact = JSON.parse(saveContact)// парсить
+
+    if (parseContact) { //перевіряє чи LocalStorage є дані
+      this.setState({ contacts: parseContact}) // змінює значення state з LocalStorage
+    }
+    
+  }
+
+  componentDidUpdate(prevProps, prevState) { // завжди при оновленні
+    // console.log("App DidUpdata");
+    if (this.state.contacts !== prevState.contacts) { // перевіряє чи дані змінились 
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts)) //записує в LocalStorage нові контакти
+    }
+  }
 
   handleSubmit = (value, { resetForm }) => {
     let newContact = value;
